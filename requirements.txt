@@ -2,10 +2,12 @@ streamlit==1.18.1
 PyPDF2==3.0.1
 python-dotenv==1.0.0
 langchain==0.0.184
-faiss-cpu==1.7.4
+faiss-cpu==1.9.0.post1
 altair==4.2.2
 
-# HuggingFace + Transformers
 transformers==4.30.2
 sentence-transformers==2.2.2
 huggingface-hub==0.14.1
+
+openai==0.27.6
+tiktoken==0.4.0
