@@ -5,9 +5,11 @@ langchain==0.0.184
 faiss-cpu==1.9.0.post1
 altair==4.2.2
 
+# Tokenizer deps with Python <3.11 support
+tiktoken==0.4.0
 transformers==4.30.2
+tokenizers==0.13.3
 sentence-transformers==2.2.2
 huggingface-hub==0.14.1
 
 openai==0.27.6
-tiktoken==0.4.0
