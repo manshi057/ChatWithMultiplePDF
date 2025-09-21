@@ -1,15 +1,16 @@
-streamlit==1.18.1
+streamlit==1.28.2
 PyPDF2==3.0.1
-python-dotenv==1.0.0
-langchain==0.0.184
-faiss-cpu==1.9.0.post1
-altair==4.2.2
+faiss-cpu==1.7.4
 
-# Tokenizer deps with Python <3.11 support
-tiktoken==0.4.0
-transformers==4.30.2
-tokenizers==0.13.3
+# LangChain core + community split (new versions)
+langchain==0.2.0
+langchain-community==0.2.0
+
+# HuggingFace + embeddings
+transformers==4.44.2
 sentence-transformers==2.2.2
-huggingface-hub==0.14.1
+huggingface-hub==0.23.4
 
-openai==0.27.6
+# Optional but useful
+tiktoken==0.7.0
+altair==5.2.0
