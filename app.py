@@ -14,9 +14,14 @@ from langchain.llms import HuggingFacePipeline
 def get_pdf_text(pdf_docs):
     text = ""
     for pdf in pdf_docs:
-        pdf_reader = PdfReader(pdf)
-        for page in pdf_reader.pages:
-            text += page.extract_text() or ""
+        try:
+            pdf_reader = PdfReader(pdf)
+            for page in pdf_reader.pages:
+                page_text = page.extract_text()
+                if page_text:
+                    text += page_text
+        except Exception as e:
+            st.error(f"Error reading {pdf.name}: {e}")
     return text
 
 
@@ -40,7 +45,7 @@ def get_vectorstore(text_chunks):
 def get_conversation_chain(vectorstore):
     pipe = pipeline(
         "text2text-generation",
-        model="google/flan-t5-large",
+        model="google/flan-t5-base",   # lighter model for Streamlit Cloud
         max_new_tokens=512,
         temperature=0.5
     )
@@ -83,15 +88,18 @@ def main():
 
     with st.sidebar:
         st.subheader("Upload Documents")
-        pdf_docs = st.file_uploader("Upload your PDFs", accept_multiple_files=True)
+        pdf_docs = st.file_uploader("Upload your PDFs", accept_multiple_files=True, type=["pdf"])
         if st.button("Process"):
             if pdf_docs:
                 with st.spinner("Processing..."):
                     raw_text = get_pdf_text(pdf_docs)
-                    chunks = get_text_chunks(raw_text)
-                    vectorstore = get_vectorstore(chunks)
-                    st.session_state.conversation = get_conversation_chain(vectorstore)
-                    st.success("Done! Now ask questions on the left 👈")
+                    if not raw_text.strip():
+                        st.warning("No readable text found in the uploaded PDFs.")
+                    else:
+                        chunks = get_text_chunks(raw_text)
+                        vectorstore = get_vectorstore(chunks)
+                        st.session_state.conversation = get_conversation_chain(vectorstore)
+                        st.success("Done! Now ask questions on the left 👈")
             else:
                 st.warning("Please upload at least one PDF.")
 
